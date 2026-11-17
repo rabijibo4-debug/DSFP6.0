@@ -3,6 +3,536 @@
  * Full-featured Job Board & Applicant Tracking System (ATS)
  */
 
+/**
+ * LocalBackend - Full-featured Client-side Storage Adapter
+ * Enables 100% functionality on GitHub Pages, offline demos, and standalone hosting.
+ */
+const LocalBackend = {
+  isGitHubPages: window.location.hostname.includes('github.io') || window.location.protocol === 'file:',
+
+  init() {
+    if (!localStorage.getItem('jp_local_jobs')) {
+      const defaultJobs = [
+        {
+          id: 6,
+          title: "CHO COMMUNITY HEALTH OFFICER",
+          company: "TechCorp Global",
+          department: "Operations",
+          location_type: "Remote",
+          location: "NIGERIA",
+          employment_type: "Full-time",
+          experience_level: "Senior Level",
+          salary_min: 200000,
+          salary_max: 245000,
+          salary_currency: "USD",
+          description: "INCHARGE OF PRIMARY HEALTH CENTER",
+          requirements: ["Medical health officer credentials", "Community health leadership", "Public health center management"],
+          benefits: ["Comprehensive coverage", "Housing allowance", "Health insurance"],
+          tags: ["Health", "Community", "Leadership"],
+          status: "active",
+          created_at: "2026-11-12 15:58:29",
+          updated_at: "2026-11-12 15:58:29",
+          applicant_count: 0
+        },
+        {
+          id: 1,
+          title: "Senior Full-Stack Engineer",
+          company: "TechCorp Global",
+          department: "Engineering",
+          location_type: "Remote",
+          location: "Remote (US / Europe)",
+          employment_type: "Full-time",
+          experience_level: "Senior Level",
+          salary_min: 140000,
+          salary_max: 185000,
+          salary_currency: "USD",
+          description: "We are seeking an experienced Senior Full-Stack Engineer to lead development on our core cloud platform. You will architect scalable microservices, optimize high-throughput distributed systems, and build beautiful, intuitive user interfaces that empower thousands of customers every day.",
+          requirements: [
+            "5+ years building production full-stack web applications",
+            "Proficiency in modern JavaScript/TypeScript (React, Next.js or Vue) and backend languages (Python, Go, or Node.js)",
+            "Solid understanding of relational and NoSQL databases (PostgreSQL, Redis)",
+            "Experience with Docker, Kubernetes, and AWS or GCP cloud infrastructure",
+            "Proven track record of mentoring junior engineers and leading code reviews"
+          ],
+          benefits: [
+            "Competitive salary & equity package",
+            "100% company-paid health, dental, and vision insurance",
+            "Flexible 401(k) retirement plan with 5% employer match",
+            "$2,500 annual home office setup budget",
+            "Unlimited paid time off (PTO) with mandatory minimums"
+          ],
+          tags: ["React", "Python", "Cloud Architecture", "PostgreSQL", "Docker"],
+          status: "active",
+          created_at: "2026-11-12 15:46:55",
+          updated_at: "2026-11-12 15:46:55",
+          applicant_count: 2
+        },
+        {
+          id: 2,
+          title: "Staff Product Designer (UI/UX)",
+          company: "TechCorp Global",
+          department: "Design",
+          location_type: "Hybrid",
+          location: "San Francisco, CA (Hybrid)",
+          employment_type: "Full-time",
+          experience_level: "Senior Level",
+          salary_min: 130000,
+          salary_max: 165000,
+          salary_currency: "USD",
+          description: "As our Staff Product Designer, you will shape the overall end-to-end product design vision for our flagship products. You will partner closely with engineering, product leadership, and researchers to craft world-class enterprise workflows that users love.",
+          requirements: [
+            "6+ years of UX/UI product design experience for complex SaaS software",
+            "Mastery of Figma, design systems, interactive prototyping, and user journey mapping",
+            "Strong portfolio showcasing user research, problem framing, and elegant interfaces",
+            "Experience working within agile software squads and design system governance",
+            "Excellent storytelling, presentation, and cross-functional leadership skills"
+          ],
+          benefits: [
+            "Top-tier compensation and equity grant",
+            "Comprehensive medical, dental, and vision coverage",
+            "Annual $3,000 professional learning & conference stipend",
+            "Catered lunches and wellness perks in our SF office",
+            "Flexible hybrid schedule (2 days in office)"
+          ],
+          tags: ["Figma", "Design Systems", "User Research", "Prototyping", "SaaS UX"],
+          status: "active",
+          created_at: "2026-11-12 15:46:55",
+          updated_at: "2026-11-12 15:46:55",
+          applicant_count: 1
+        },
+        {
+          id: 3,
+          title: "Technical Product Manager",
+          company: "TechCorp Global",
+          department: "Product",
+          location_type: "Remote",
+          location: "Remote - Anywhere",
+          employment_type: "Full-time",
+          experience_level: "Mid-Senior Level",
+          salary_min: 120000,
+          salary_max: 155000,
+          salary_currency: "USD",
+          description: "Join our rapidly scaling platform team as a Technical Product Manager. You will define the roadmap for our public APIs, developer integrations, and webhooks platform, translating complex technical capabilities into clear, high-impact features.",
+          requirements: [
+            "3-5 years product management experience for technical or developer-facing products",
+            "Strong engineering background or computer science degree preferred",
+            "Demonstrated ability to drive roadmap from discovery through delivery",
+            "Comfortable with API specs (REST/GraphQL), technical documentation, and SQL queries",
+            "Customer-centric mindset with data-informed decision making"
+          ],
+          benefits: [
+            "Competitive base salary + performance bonuses",
+            "Remote-first work culture with flexible working hours",
+            "Comprehensive healthcare coverage for you and dependents",
+            "Annual international company retreat",
+            "Generous parental leave policy (16 weeks paid)"
+          ],
+          tags: ["Product Roadmap", "REST APIs", "Agile/Scrum", "SQL", "Developer Experience"],
+          status: "active",
+          created_at: "2026-11-12 15:46:55",
+          updated_at: "2026-11-12 15:46:55",
+          applicant_count: 1
+        },
+        {
+          id: 4,
+          title: "DevOps & Cloud Infrastructure Engineer",
+          company: "TechCorp Global",
+          department: "Engineering",
+          location_type: "On-site",
+          location: "New York, NY",
+          employment_type: "Full-time",
+          experience_level: "Mid-Level",
+          salary_min: 125000,
+          salary_max: 160000,
+          salary_currency: "USD",
+          description: "We are looking for a DevOps & Cloud Infrastructure Engineer to scale our automated CI/CD pipelines, ensure 99.99% system availability, and enforce robust security and monitoring across our multi-cloud deployment.",
+          requirements: [
+            "3+ years managing AWS/GCP infrastructure with Infrastructure as Code (Terraform)",
+            "Strong container orchestration experience with Kubernetes (EKS / GKE)",
+            "Hands-on experience with CI/CD tools (GitHub Actions, GitLab CI, ArgoCD)",
+            "Monitoring and telemetry with Prometheus, Grafana, and Datadog",
+            "Scripting experience with Python, Bash, or Go"
+          ],
+          benefits: [
+            "Competitive salary + annual bonus plan",
+            "Commuter subsidy and transit pass reimbursement",
+            "Full health insurance, life, and disability plans",
+            "401(k) matching",
+            "State-of-the-art hardware (M-series MacBook Pro + dual monitors)"
+          ],
+          tags: ["AWS", "Kubernetes", "Terraform", "CI/CD", "Prometheus"],
+          status: "active",
+          created_at: "2026-11-12 15:46:55",
+          updated_at: "2026-11-12 15:46:55",
+          applicant_count: 0
+        },
+        {
+          id: 5,
+          title: "Growth Marketing & Content Strategist",
+          company: "TechCorp Global",
+          department: "Marketing",
+          location_type: "Hybrid",
+          location: "Austin, TX",
+          employment_type: "Full-time",
+          experience_level: "Mid-Level",
+          salary_min: 90000,
+          salary_max: 120000,
+          salary_currency: "USD",
+          description: "Lead our outbound acquisition, technical content marketing, and inbound demand generation. You will craft compelling case studies, orchestrate multi-channel campaign launches, and collaborate with sales to drive pipeline growth.",
+          requirements: [
+            "3+ years of B2B SaaS growth marketing or content strategy experience",
+            "Proven ability to create high-performing blog content, whitepapers, and landing pages",
+            "Familiarity with SEO tools (Ahrefs, Semrush) and Google Analytics 4",
+            "Experience with email marketing automation (HubSpot, Marketo, Customer.io)",
+            "Excellent written and verbal communication skills"
+          ],
+          benefits: [
+            "Competitive base compensation + quarterly performance incentives",
+            "Comprehensive health, dental, and vision benefits",
+            "Wellness stipend and monthly gym membership allowance",
+            "Downtown Austin modern workspace with rooftop patio",
+            "Flexible PTO policy"
+          ],
+          tags: ["B2B SaaS", "Content Strategy", "SEO", "HubSpot", "Demand Gen"],
+          status: "active",
+          created_at: "2026-11-12 15:46:55",
+          updated_at: "2026-11-12 15:46:55",
+          applicant_count: 0
+        }
+      ];
+      localStorage.setItem('jp_local_jobs', JSON.stringify(defaultJobs));
+    }
+
+    if (!localStorage.getItem('jp_local_apps')) {
+      const defaultApps = [
+        {
+          id: 4,
+          job_id: 1,
+          job_title: "Senior Full-Stack Engineer",
+          job_department: "Engineering",
+          candidate_name: "Samira Khan",
+          candidate_email: "samira.khan.tech@example.com",
+          candidate_phone: "+1 (555) 567-8901",
+          linkedin_url: "https://linkedin.com/in/samirakhan-mock",
+          portfolio_url: "https://samirakhan.dev",
+          experience_years: 4,
+          cover_letter: "Passionate full-stack developer with deep experience in TypeScript, React, and Python.",
+          resume_filename: "Samira_Khan_CV.pdf",
+          resume_content: "Samira Khan - Full Stack Engineer. 4 years experience in modern web technologies, automated testing, and CI/CD pipelines.",
+          status: "submitted",
+          recruiter_notes: "New applicant from referral link. Resume looks aligned with requirement checklist.",
+          rating: 3,
+          applied_at: "2026-11-12 08:20:00"
+        },
+        {
+          id: 2,
+          job_id: 2,
+          job_title: "Staff Product Designer (UI/UX)",
+          job_department: "Design",
+          candidate_name: "Jordan Chen",
+          candidate_email: "jordan.chen.design@example.com",
+          candidate_phone: "+1 (555) 345-6789",
+          linkedin_url: "https://linkedin.com/in/jordanchen-ux",
+          portfolio_url: "https://jordanchen.portfolio.mock",
+          experience_years: 7,
+          cover_letter: "I specialize in enterprise SaaS design systems and complex data-dense interfaces.",
+          resume_filename: "Jordan_Chen_Design_Resume.pdf",
+          resume_content: "Jordan Chen - Staff Product Designer. 7 years experience designing multi-tenant enterprise software and design systems.",
+          status: "under_review",
+          recruiter_notes: "Portfolio reviewed by Design Director. High visual fidelity. Scheduling 30-min discovery call.",
+          rating: 4,
+          applied_at: "2026-11-10 14:30:00"
+        },
+        {
+          id: 1,
+          job_id: 1,
+          job_title: "Senior Full-Stack Engineer",
+          job_department: "Engineering",
+          candidate_name: "Alex Rivera",
+          candidate_email: "alex.rivera.dev@example.com",
+          candidate_phone: "+1 (555) 234-5678",
+          linkedin_url: "https://linkedin.com/in/alexrivera-mock",
+          portfolio_url: "https://github.com/alexrivera-mock",
+          experience_years: 6.5,
+          cover_letter: "I have spent the last 6 years building distributed React and Python platforms.",
+          resume_filename: "Alex_Rivera_Senior_FullStack_Resume.pdf",
+          resume_content: "Alex Rivera - Senior Full Stack Engineer. 6+ years experience in React, Python, PostgreSQL, AWS, Docker.",
+          status: "interview",
+          recruiter_notes: "Passed coding challenge and recruiter screen. Next step: System Architecture interview Thursday 2 PM.",
+          rating: 5,
+          applied_at: "2026-11-09 10:15:00"
+        },
+        {
+          id: 3,
+          job_id: 3,
+          job_title: "Technical Product Manager",
+          job_department: "Product",
+          candidate_name: "Morgan Taylor",
+          candidate_email: "morgan.taylor.pm@example.com",
+          candidate_phone: "+1 (555) 456-7890",
+          linkedin_url: "https://linkedin.com/in/morgantaylor-pm",
+          portfolio_url: "https://morgantaylor.dev",
+          experience_years: 5,
+          cover_letter: "With an engineering background and 5 years leading developer tooling products.",
+          resume_filename: "Morgan_Taylor_TPM_Resume.pdf",
+          resume_content: "Morgan Taylor - Technical Product Manager. Led API Platform team of 12 engineers. Grew third-party integrations by 180%.",
+          status: "offer",
+          recruiter_notes: "All rounds cleared unanimously. Sent official offer letter ($150k base + equity).",
+          rating: 5,
+          applied_at: "2026-11-07 09:00:00"
+        }
+      ];
+      localStorage.setItem('jp_local_apps', JSON.stringify(defaultApps));
+    }
+  },
+
+  getJobs() {
+    this.init();
+    return JSON.parse(localStorage.getItem('jp_local_jobs') || '[]');
+  },
+
+  saveJobs(jobs) {
+    localStorage.setItem('jp_local_jobs', JSON.stringify(jobs));
+  },
+
+  getApps() {
+    this.init();
+    return JSON.parse(localStorage.getItem('jp_local_apps') || '[]');
+  },
+
+  saveApps(apps) {
+    localStorage.setItem('jp_local_apps', JSON.stringify(apps));
+  },
+
+  handle(endpoint, options = {}) {
+    this.init();
+    const url = new URL(endpoint, 'http://localhost');
+    const path = url.pathname;
+    const method = (options.method || 'GET').toUpperCase();
+    const body = options.body ? JSON.parse(options.body) : {};
+
+    // 1. GET /api/jobs
+    if (path === '/api/jobs' && method === 'GET') {
+      let jobs = this.getJobs();
+      const apps = this.getApps();
+      const search = url.searchParams.get('search');
+      const dept = url.searchParams.get('department');
+      const locType = url.searchParams.get('location_type');
+      const empType = url.searchParams.get('employment_type');
+      const status = url.searchParams.get('status');
+      const admin = url.searchParams.get('admin') === 'true';
+
+      jobs = jobs.map(j => {
+        const count = apps.filter(a => a.job_id === j.id).length;
+        return { ...j, applicant_count: count };
+      });
+
+      if (!admin) {
+        jobs = jobs.filter(j => j.status === 'active');
+      } else if (status) {
+        jobs = jobs.filter(j => j.status === status);
+      }
+
+      if (dept) jobs = jobs.filter(j => j.department.toLowerCase() === dept.toLowerCase());
+      if (locType) jobs = jobs.filter(j => j.location_type.toLowerCase() === locType.toLowerCase());
+      if (empType) jobs = jobs.filter(j => j.employment_type.toLowerCase() === empType.toLowerCase());
+      if (search) {
+        const s = search.toLowerCase();
+        jobs = jobs.filter(j => 
+          j.title.toLowerCase().includes(s) ||
+          j.description.toLowerCase().includes(s) ||
+          (j.tags && j.tags.some(t => t.toLowerCase().includes(s)))
+        );
+      }
+
+      return Promise.resolve({ jobs, total: jobs.length });
+    }
+
+    // 2. GET /api/jobs/:id
+    if (path.startsWith('/api/jobs/') && method === 'GET' && !path.endsWith('/apply')) {
+      const parts = path.split('/');
+      const id = parseInt(parts[3]);
+      const jobs = this.getJobs();
+      const apps = this.getApps();
+      const job = jobs.find(j => j.id === id);
+      if (!job) return Promise.reject(new Error('Job not found'));
+      job.applicant_count = apps.filter(a => a.job_id === id).length;
+      return Promise.resolve({ job });
+    }
+
+    // 3. POST /api/jobs (Create Job)
+    if (path === '/api/jobs' && method === 'POST') {
+      const jobs = this.getJobs();
+      const newJob = {
+        id: Date.now(),
+        title: body.title,
+        company: body.company || 'TechCorp Global',
+        department: body.department,
+        location_type: body.location_type,
+        location: body.location,
+        employment_type: body.employment_type,
+        experience_level: body.experience_level || 'Mid-Level',
+        salary_min: parseInt(body.salary_min || 0),
+        salary_max: parseInt(body.salary_max || 0),
+        salary_currency: 'USD',
+        description: body.description,
+        requirements: body.requirements || [],
+        benefits: body.benefits || [],
+        tags: body.tags || [],
+        status: body.status || 'active',
+        created_at: new Date().toISOString().replace('T', ' ').substring(0, 19),
+        updated_at: new Date().toISOString().replace('T', ' ').substring(0, 19),
+        applicant_count: 0
+      };
+      jobs.unshift(newJob);
+      this.saveJobs(jobs);
+      return Promise.resolve({ job: newJob, message: 'Job created successfully' });
+    }
+
+    // 4. PUT /api/jobs/:id
+    if (path.startsWith('/api/jobs/') && method === 'PUT') {
+      const parts = path.split('/');
+      const id = parseInt(parts[3]);
+      const jobs = this.getJobs();
+      const index = jobs.findIndex(j => j.id === id);
+      if (index === -1) return Promise.reject(new Error('Job not found'));
+      jobs[index] = { ...jobs[index], ...body, updated_at: new Date().toISOString().replace('T', ' ').substring(0, 19) };
+      this.saveJobs(jobs);
+      return Promise.resolve({ job: jobs[index], message: 'Job updated' });
+    }
+
+    // 5. DELETE /api/jobs/:id
+    if (path.startsWith('/api/jobs/') && method === 'DELETE') {
+      const parts = path.split('/');
+      const id = parseInt(parts[3]);
+      let jobs = this.getJobs();
+      jobs = jobs.filter(j => j.id !== id);
+      this.saveJobs(jobs);
+      let apps = this.getApps();
+      apps = apps.filter(a => a.job_id !== id);
+      this.saveApps(apps);
+      return Promise.resolve({ message: 'Job deleted' });
+    }
+
+    // 6. POST /api/jobs/:id/apply
+    if (path.startsWith('/api/jobs/') && path.endsWith('/apply') && method === 'POST') {
+      const parts = path.split('/');
+      const jobId = parseInt(parts[3]);
+      const jobs = this.getJobs();
+      const job = jobs.find(j => j.id === jobId);
+      if (!job) return Promise.reject(new Error('Job opening not found'));
+
+      const apps = this.getApps();
+      const email = (body.candidate_email || '').toLowerCase().trim();
+      if (apps.some(a => a.job_id === jobId && a.candidate_email.toLowerCase() === email)) {
+        return Promise.reject(new Error(`You have already applied for ${job.title}`));
+      }
+
+      const newApp = {
+        id: Date.now(),
+        job_id: jobId,
+        job_title: job.title,
+        job_department: job.department,
+        candidate_name: body.candidate_name,
+        candidate_email: email,
+        candidate_phone: body.candidate_phone || '',
+        linkedin_url: body.linkedin_url || '',
+        portfolio_url: body.portfolio_url || '',
+        experience_years: parseFloat(body.experience_years || 0),
+        cover_letter: body.cover_letter || '',
+        resume_filename: body.resume_filename || 'Resume.pdf',
+        resume_content: body.resume_content || '',
+        status: 'submitted',
+        recruiter_notes: '',
+        rating: 0,
+        applied_at: new Date().toISOString().replace('T', ' ').substring(0, 19)
+      };
+
+      apps.unshift(newApp);
+      this.saveApps(apps);
+      return Promise.resolve({ application: newApp, message: 'Application submitted!' });
+    }
+
+    // 7. GET /api/applications
+    if (path === '/api/applications' && method === 'GET') {
+      let apps = this.getApps();
+      const candEmail = url.searchParams.get('candidate_email');
+      const jobId = url.searchParams.get('job_id');
+      const status = url.searchParams.get('status');
+
+      if (candEmail) {
+        apps = apps.filter(a => a.candidate_email.toLowerCase() === candEmail.toLowerCase().trim());
+      }
+      if (jobId) {
+        apps = apps.filter(a => a.job_id === parseInt(jobId));
+      }
+      if (status) {
+        apps = apps.filter(a => a.status === status);
+      }
+
+      return Promise.resolve({ applications: apps, total: apps.length });
+    }
+
+    // 8. PUT /api/applications/:id/status
+    if (path.startsWith('/api/applications/') && path.endsWith('/status') && method === 'PUT') {
+      const parts = path.split('/');
+      const id = parseInt(parts[3]);
+      const apps = this.getApps();
+      const index = apps.findIndex(a => a.id === id);
+      if (index === -1) return Promise.reject(new Error('Application not found'));
+
+      if (body.status) apps[index].status = body.status;
+      if (body.recruiter_notes !== undefined) apps[index].recruiter_notes = body.recruiter_notes;
+      if (body.rating !== undefined) apps[index].rating = body.rating;
+
+      this.saveApps(apps);
+      return Promise.resolve({ application: apps[index], message: 'Status updated' });
+    }
+
+    // 9. GET /api/stats
+    if (path === '/api/stats' && method === 'GET') {
+      const jobs = this.getJobs();
+      const apps = this.getApps();
+
+      const activeJobs = jobs.filter(j => j.status === 'active').length;
+      const inReview = apps.filter(a => ['submitted', 'under_review'].includes(a.status)).length;
+      const interviews = apps.filter(a => a.status === 'interview').length;
+      const offers = apps.filter(a => a.status === 'offer').length;
+      const hired = apps.filter(a => a.status === 'hired').length;
+      const rejected = apps.filter(a => a.status === 'rejected').length;
+
+      const deptCounts = {};
+      jobs.forEach(j => {
+        deptCounts[j.department] = (deptCounts[j.department] || 0) + 1;
+      });
+      const departments = Object.keys(deptCounts).map(d => ({ department: d, count: deptCounts[d] }));
+
+      return Promise.resolve({
+        total_jobs: jobs.length,
+        active_jobs: activeJobs,
+        total_applications: apps.length,
+        in_review: inReview,
+        interviews: interviews,
+        offers: offers,
+        hired: hired,
+        rejected: rejected,
+        departments,
+        recent_applications: apps.slice(0, 5)
+      });
+    }
+
+    // 10. POST /api/reset-demo
+    if (path === '/api/reset-demo' && method === 'POST') {
+      localStorage.removeItem('jp_local_jobs');
+      localStorage.removeItem('jp_local_apps');
+      this.init();
+      return Promise.resolve({ message: 'Demo data reset' });
+    }
+
+    return Promise.reject(new Error(`Endpoint not found: ${path}`));
+  }
+};
+
 const app = {
   // Application State
   currentRole: 'candidate', // 'candidate' | 'admin'
@@ -165,6 +695,9 @@ const app = {
 
   // ==================== API HELPERS ====================
   async api(endpoint, options = {}) {
+    if (typeof LocalBackend !== 'undefined' && LocalBackend.isGitHubPages) {
+      return LocalBackend.handle(endpoint, options);
+    }
     try {
       const response = await fetch(endpoint, {
         headers: {
@@ -179,6 +712,10 @@ const app = {
       }
       return data;
     } catch (err) {
+      if (typeof LocalBackend !== 'undefined') {
+        console.warn('API error or server offline. Using local browser store:', err.message);
+        return LocalBackend.handle(endpoint, options);
+      }
       console.error(`API Error on ${endpoint}:`, err);
       this.showToast(err.message, 'error');
       throw err;
